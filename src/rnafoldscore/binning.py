@@ -17,26 +17,20 @@ def make_bin_edges(max_dist: float = 20.0, n_bins: int = 20) -> np.ndarray:
     return np.linspace(0.0, float(max_dist), int(n_bins) + 1)
 
 
-def distance_to_bin(
-    distance: float,
-    edges: np.ndarray,
-) -> Optional[int]:
+def distance_to_bin(distance: float, max_dist: float = 20.0, n_bins: int = 20) -> Optional[int]:
     """
-    Converts a distance value to a bin index.
+     Converts a distance value to a bin index.
 
     Returns None if the distance is outside the bin range.
     """
-    if distance < edges[0] or distance > edges[-1]:
+    if distance < 0.0 or distance > max_dist:
         return None
 
-    # np.digitize returns indices in the range 1..n_bins
-    idx = int(np.digitize([distance], edges, right=True)[0]) - 1
+    bin_width = max_dist / n_bins  # например 20/20 = 1.0
+    idx = int(distance // bin_width)
 
-    # Guard against falling exactly on the upper edge
-    if idx == len(edges) - 1:
-        idx = len(edges) - 2
-
-    if idx < 0 or idx >= len(edges) - 1:
-        return None
+    # distance == max_dist даст idx == n_bins, отправляем в последний бин
+    if idx == n_bins:
+        idx = n_bins - 1
 
     return idx
