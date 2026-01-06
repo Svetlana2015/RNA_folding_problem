@@ -5,7 +5,7 @@
 Проект: статистический потенциал для РНК по расстояниям C3' (обучение профилей и скоринг PDB).
 
 ## Installation
-```bash
+``` bash
 python -m venv .venv
 .venv\Scripts\activate
 pip install -e
@@ -15,17 +15,17 @@ pip install -e
 
 Train:
 
-```bash
+``` bash
 python -m rnafoldscore.train --pdb-dir data\pdb --out-dir outputs\profiles
 ```
 
 Plot:
-```bash
+``` bash
 python -m rnafoldscore.plot_profiles --profiles outputs\profiles --out outputs\plots
 ```
 
 Score:
-```bash
+``` bash
 python -m rnafoldscore.score_structure --pdb examples\example.pdb --profiles outputs\profiles
 ```
 
