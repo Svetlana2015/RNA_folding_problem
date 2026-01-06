@@ -95,3 +95,46 @@ def parse_pdb_c3prime(pdb_path: str, atom_name: str = "C3'") -> List[C3Atom]:
             atoms.append(C3Atom(chain_id, res_seq, ins_code, nuc, x, y, z))
 
     return atoms
+
+import math
+from typing import Iterator
+
+
+def euclidean_distance(a: C3Atom, b: C3Atom) -> float:
+    """
+    Computes the Euclidean distance between two C3' atoms.
+    """
+    dx = a.x - b.x
+    dy = a.y - b.y
+    dz = a.z - b.z
+    return math.sqrt(dx * dx + dy * dy + dz * dz)
+
+
+def iter_pairs_intrachain(
+    atoms: list[C3Atom],
+    min_seq_sep: int = 4,
+) -> Iterator[tuple[C3Atom, C3Atom]]:
+    """
+    Generates (i, j) atom pairs within the same chain (intrachain),
+    such that j >= i + min_seq_sep (the i and i+4 rule).
+
+    IMPORTANT:
+    - The residue order follows the order in the file (after sorting)
+    - The insertion code is taken into account during sorting
+    """
+    # Group atoms by chain
+    chains: dict[str, list[C3Atom]] = {}
+    for atom in atoms:
+        chains.setdefault(atom.chain_id, []).append(atom)
+
+    for chain_atoms in chains.values():
+        # Sort residues within each chain
+        chain_atoms_sorted = sorted(
+            chain_atoms,
+            key=lambda a: (a.res_seq, a.ins_code)
+        )
+
+        n = len(chain_atoms_sorted)
+        for i in range(n):
+            for j in range(i + min_seq_sep, n):
+                yield chain_atoms_sorted[i], chain_atoms_sorted[j]
