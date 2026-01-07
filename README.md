@@ -164,5 +164,5 @@ python -m rnafoldscore.score_structure --help
 
 ### Author
 
-Student project — Master 2 GENIOMHE
+Student project - Master 2 GENIOMHE
 Bioinformatique de la structure de l’ARN
