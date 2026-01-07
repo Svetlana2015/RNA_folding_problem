@@ -91,6 +91,7 @@ RNA_project/
 ├── pyproject.toml
 ├── README.md
 └── .gitignore
+```
 
 ## Installation
 
