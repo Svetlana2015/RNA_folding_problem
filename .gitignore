@@ -10,5 +10,7 @@ build/
 .vscode/
 .idea/
 # Keep directory structure
-!data/**/.gitkeep
+data/pdb/*
+!data/pdb/.gitkeep
+outputs/*
 !outputs/**/.gitkeep
