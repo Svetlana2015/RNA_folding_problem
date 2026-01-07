@@ -55,34 +55,113 @@ $$
 Each interaction profile is saved as a text file with **20 values**
 (one per distance bin).
 
+## Scoring a structure
 
+For a new RNA structure:
 
+1. **All valid intrachain pairs** ($j \ge i + 4$) are extracted.
+2. **Distances** between C3' atoms are computed.
+3. For each distance, the corresponding score is obtained using
+   **linear interpolation** between neighboring bins.
+4. The **total score** is the **sum of all interaction scores**,
+   acting as a proxy for the Gibbs free energy.
 
+Lower scores correspond to more favorable (native-like) conformations.
 
+## Repository structure
 
+```bash
+RNA_project/
+├── src/rnafoldscore/           # Python package
+│   ├── __init__.py
+│   ├── constants.py            # Base-pair definitions
+│   ├── pdb_utils.py            # PDB parsing, C3' extraction, distances
+│   ├── binning.py              # Distance binning
+│   ├── profiles.py             # Profile loading & interpolation
+│   ├── train.py                # Training script
+│   ├── plot_profiles.py        # Plotting script
+│   └── score_structure.py      # Scoring script
+│
+├── data/pdb/                   # Training PDB files (not versioned)
+├── examples/                   # Example PDB files
+├── outputs/
+│   ├── profiles/               # Trained profiles (AA.txt, AU.txt, ...)
+│   └── plots/                  # Profile plots
+│
+├── pyproject.toml
+├── README.md
+└── .gitignore
 
 ## Installation
-``` bash
-python -m venv .venv
-.venv\Scripts\activate
-pip install -e
-```
 
+Python **3.10+** is required.
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate    # Windows
+pip install -e .
+```
 ## Usage
 
-Train:
+### 1. Training interaction profiles
 
 ``` bash
 python -m rnafoldscore.train --pdb-dir data\pdb --out-dir outputs\profiles
 ```
 
-Plot:
+This generates 10 profile files, each containing 20 distance bins.
+
+### 2. Plotting profiles
+
 ``` bash
 python -m rnafoldscore.plot_profiles --profiles outputs\profiles --out outputs\plots
 ```
+This produces one plot per interaction type (AA.png, AU.png, …).
 
-Score:
+### 3. Scoring an RNA structure
+
 ``` bash
 python -m rnafoldscore.score_structure --pdb examples\example.pdb --profiles outputs\profiles
 ```
+Output:
 
+- Total score (sum of interaction terms)
+
+- Number of scored residue pairs
+
+## Command-line interface
+
+All scripts provide a `--help` option:
+
+```bash
+python -m rnafoldscore.train --help
+python -m rnafoldscore.plot_profiles --help
+python -m rnafoldscore.score_structure --help
+```
+
+### Good practices
+
+- Modular code with reusable functions
+
+- No code duplication
+
+- Version control using Git
+
+- Clear CLI interfaces
+
+- Reproducible environment
+
+- Documented repository
+
+### Limitations
+
+- This implementation is intended for educational purposes.
+
+- Results obtained from very small datasets are not statistically meaningful.
+
+- Realistic profiles require a sufficiently large and diverse training set of RNA structures.
+
+### Author
+
+Student project — Master 2 GENIOMHE
+Bioinformatique de la structure de l’ARN
