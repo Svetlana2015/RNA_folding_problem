@@ -1,4 +1,4 @@
-# RNA Objective Function — Distance-Based Statistical Potential
+# RNA Objective Function - Distance-Based Statistical Potential
 ## Project context
 
 ### Master 2 GENIOMHE - Bioinformatique de la structure de l’ARN
