@@ -26,105 +26,40 @@ AA, AU, AC, AG,
 UU, UC, UG,
 CC, CG,
 GG
+```
 
-Training (statistical potential)
+###  Training (statistical potential)
 
 For each base-pair type and each distance bin:
 
-Observed frequencies are computed from training PDB structures:
+- **Observed frequencies** are computed from training PDB structures:
 
-𝑓
-𝑖
-𝑗
-𝑂
-𝐵
-𝑆
-(
-𝑟
-)
-=
-𝑁
-𝑖
-𝑗
-(
-𝑟
-)
-𝑁
-𝑖
-𝑗
-f
-ij
-OBS
-	​
+$$
+f^{\mathrm{OBS}}_{ij}(r) = \frac{N_{ij}(r)}{N_{ij}}
+$$
 
-(r)=
-N
-ij
-	​
+- A **reference distribution (XX)** is computed by ignoring base identities:
 
-N
-ij
-	​
+$$
+f^{\mathrm{REF}}_{XX}(r) = \frac{N_{XX}(r)}{N_{XX}}
+$$
 
-(r)
-	​
+- The **interaction potential** is defined as:
 
+$$
+u_{ij}(r) = -\log \left( \frac{f^{\mathrm{OBS}}_{ij}(r)}{f^{\mathrm{REF}}_{XX}(r)} \right)
+$$
 
-A reference distribution (XX) is computed by ignoring base identities:
+- Values are capped at a maximum of **10**.
 
-𝑓
-𝑋
-𝑋
-𝑅
-𝐸
-𝐹
-(
-𝑟
-)
-=
-𝑁
-𝑋
-𝑋
-(
-𝑟
-)
-𝑁
-𝑋
-𝑋
-f
-XX
-REF
-	​
-
-(r)=
-N
-XX
-	​
-
-N
-XX
-	​
-
-(r)
-	​
+Each interaction profile is saved as a text file with **20 values**
+(one per distance bin).
 
 
 
 
 
 
-
-
-
-
-
-
-
-# RNA_folding_problem
-
-# RNA Objective Function
-
-Проект: статистический потенциал для РНК по расстояниям C3' (обучение профилей и скоринг PDB).
 
 ## Installation
 ``` bash
